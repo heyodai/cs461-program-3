@@ -20,6 +20,13 @@ env:
 	pip install -r requirements.txt; \
 
 
+# Run the project
+#
+# This will run the project in the virtual environment
+run:
+	source venv/bin/activate; \
+	python3 main.py; \
+
 # Automatically reinstall dependencies when requirements.txt changes
 #
 # This will trigger when venv is activated.
