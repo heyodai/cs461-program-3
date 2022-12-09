@@ -19,11 +19,19 @@ This program is a machine learning program that uses a neural network to predict
 1. Clone the repository
 2. Create environment with `make env`
 
-## A Note on Apple Silicon
+### A Note on Apple Silicon
 
 This program was built on an Apple Silicon system (M2 Macbook Air). It is possible that the program will not run on an Intel-based system. If you are using an Intel-based system, you may need to modify the version of TensorFlow used in the program.
 
 The program uses the `tensorflow-metal` package created by Apple: https://developer.apple.com/metal/tensorflow-plugin/
+
+## Build Commands
+
+- `make env` - Create the environment
+- `make run` - Run the program
+- `make test` - Run the tests
+- `make clean` - Clean the environment 
+  - (remove the `venv` directory and Python cache files)
 
 ## About the Dataset
 
