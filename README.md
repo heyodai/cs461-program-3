@@ -12,7 +12,7 @@ TODO: update this table of contents
 
 ## About
 
-This program is a machine learning program that uses a neural network to predict the presence of heart disease in a patient. The program uses the [Heart Disease UCI dataset](https://www.kaggle.com/ronitf/heart-disease-uci) from Kaggle.
+This program is a machine learning program that uses a neural network to predict the presence of heart disease in a patient. The program uses the [Cleveland Clinic Heart Disease Dataset](https://www.kaggle.com/datasets/aavigan/cleveland-clinic-heart-disease-dataset) from Kaggle.
 
 ## Setup
 
