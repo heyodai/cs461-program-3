@@ -35,7 +35,7 @@ The program uses the `tensorflow-metal` package created by Apple: https://develo
 
 ## About the Dataset
 
-*Note: This section is a copy of the text file in the provided heart-data directory. It's originally sourced from [Kaggle](https://www.kaggle.com/datasets/aavigan/cleveland-clinic-heart-disease-dataset)*
+*Note: This section is a copy of the text file in the provided heart-data directory. It's originally sourced from [Kaggle](https://www.kaggle.com/datasets/aavigan/cleveland-clinic-heart-disease-dataset).*
 
 ### Context
 
