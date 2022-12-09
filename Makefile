@@ -12,7 +12,7 @@
 #
 # @see https://stackoverflow.com/questions/74737897/
 # (Yes, that's my own Stack Overflow question :P)
-install:
+env:
 	\
 	python3 -m venv venv; \
 	source venv/bin/activate; \
@@ -32,7 +32,7 @@ venv/bin/activate: requirements.txt
 # Run this if you are having issues with the project
 # or if you want to start fresh
 #
-# After running this, you will need to run `make install` again
+# After running this, you will need to run `make env` again
 clean:
 	rm -rf __pycache__
 	rm -rf venv
