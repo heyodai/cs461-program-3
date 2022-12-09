@@ -1,4 +1,6 @@
 """
+TODO: add a description of the project
+
 You are given a file with clinical data from the Cleveland Clinic, showing various symptoms and test results for heart patients, with a target variable indicating whether they were eventually diagnosed with heart disease by specific criteria. Your task is to build a neural network to predict the diagnosis based on clinical data.  A full description of the data is given in the attached zip file.
 
 Some thoughts on processing the data:
@@ -15,6 +17,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from rich import print
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix, classification_report
@@ -24,7 +27,9 @@ from keras.callbacks import EarlyStopping
 
 
 """
-1. Load the data in from processed_cleveland.csv
+1. Load and normalize the data 
+
+Raw data is stored in: raw_cleveland_clinic_data.csv
 
 Structure of the data:
 
@@ -58,6 +63,10 @@ Structure of the data:
 """
 
 # define enums to make the data more readable
+class Sex:
+    MALE = 1
+    FEMALE = 0
+
 class ChestPainType:
     TYPICAL_ANGINA = 1
     ATYPICAL_ANGINA = 2
@@ -84,12 +93,24 @@ class Diagnosis:
     GREATER_THAN_50 = 1
 
 # open the file
-df = pd.read_csv('processed_cleveland.csv')
+df = pd.read_csv('data/raw_cleveland_clinic_data.csv')
 
-# check the data
-print(df.head())
-print(df.info())
-print(df.describe())
+# remove any rows with missing data or ? values
+df = df.replace('?', np.nan)
+df = df.dropna()
 
+# convert from pandas dataframe to numpy array
+data = df.values
 
+# print(data)
 
+# normalize the data
+# TODO: add more documentation of normalization function used
+sc = StandardScaler()
+data = sc.fit_transform(data)
+
+# print(data)
+
+"""
+2. Define the Keras model
+"""
