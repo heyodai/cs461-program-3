@@ -8,6 +8,7 @@ Some thoughts on processing the data:
 - For output, you may decide to use two outputs and 1-hot coding (higher output taken as classification), or a single output (linear or hyperbolic tangent), with > 0 or < 0 taken as indicating probable classification.
 - If you do any sort of recoding prior to training, you may write a quick Python or Java script doing the transformation. You don't need to submit these "utility" scripts as long as you mention them in your report. (But for many things, such as normalizing numeric variables, there are library functions or API options to do this automatically.)
 """
+# TODO: consider splitting this into multiple files
 
 # TODO: can we remove any of these at the end?
 import numpy as np
@@ -56,6 +57,32 @@ Structure of the data:
         Value 1: > 50% diameter narrowing
 """
 
+# define enums to make the data more readable
+class ChestPainType:
+    TYPICAL_ANGINA = 1
+    ATYPICAL_ANGINA = 2
+    NON_ANGINAL_PAIN = 3
+    ASYMPTOMATIC = 4
+
+class RestingECG:
+    NORMAL = 0
+    ABNORMAL = 1
+    HYPERTROPHY = 2
+
+class Slope:
+    UPSLOPING = 1
+    FLAT = 2
+    DOWNSLOPING = 3
+
+class Thal:
+    NORMAL = 3
+    FIXED_DEFECT = 6
+    REVERSABLE_DEFECT = 7
+
+class Diagnosis:
+    LESS_THAN_50 = 0
+    GREATER_THAN_50 = 1
+
 # open the file
 df = pd.read_csv('processed_cleveland.csv')
 
@@ -64,45 +91,5 @@ print(df.head())
 print(df.info())
 print(df.describe())
 
-# check for missing data
-print(df.isnull().sum())
 
-# check for duplicates
-print(df.duplicated().sum())
-
-# check for outliers
-sns.boxplot(x=df['age'])
-plt.show()
-sns.boxplot(x=df['trestbps'])
-plt.show()
-sns.boxplot(x=df['chol'])
-plt.show()
-sns.boxplot(x=df['thalach'])
-plt.show()
-sns.boxplot(x=df['oldpeak'])
-plt.show()
-
-# check for correlation
-sns.heatmap(df.corr(), annot=True)
-plt.show()
-
-# check for class imbalance
-sns.countplot(x='num', data=df)
-plt.show()
-
-# check for correlation with target variable
-print(df.corr()['num'].sort_values())
-
-# check for multicollinearity
-print(df.corr())
-
-# drop the duplicate
-df.drop_duplicates(inplace=True)
-
-# drop the outliers
-df.drop(df[df['age'] > 70].index, inplace=True)
-df.drop(df[df['trestbps'] > 180].index, inplace=True)
-df.drop(df[df['chol'] > 400].index, inplace=True)
-df.drop(df[df['thalach'] < 60].index, inplace=True)
-df.drop(df[df['oldpeak'] > 5].index, inplace=True)
 
