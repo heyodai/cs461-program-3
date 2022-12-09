@@ -1,5 +1,11 @@
 """
 TODO: add a description of the project
+TODO: add a description of the data
+TODO: add a description of the model
+TODO: add a description of the training process
+TODO: add a description of the results
+
+TODO: add steps
 
 You are given a file with clinical data from the Cleveland Clinic, showing various symptoms and test results for heart patients, with a target variable indicating whether they were eventually diagnosed with heart disease by specific criteria. Your task is to build a neural network to predict the diagnosis based on clinical data.  A full description of the data is given in the attached zip file.
 
@@ -19,7 +25,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from rich import print
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.metrics import confusion_matrix, classification_report
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
@@ -63,6 +69,7 @@ Structure of the data:
 """
 
 # define enums to make the data more readable
+# TODO: Should I remove these?
 class Sex:
     MALE = 1
     FEMALE = 0
@@ -92,25 +99,107 @@ class Diagnosis:
     LESS_THAN_50 = 0
     GREATER_THAN_50 = 1
 
-# open the file
+# 1a. Load the data into a pandas dataframe
 df = pd.read_csv('data/raw_cleveland_clinic_data.csv')
 
-# remove any rows with missing data or ? values
+# 1b. Remove any rows with missing data or ? values
+# TODO: should I keep the ? rows and sub in a value?
 df = df.replace('?', np.nan)
 df = df.dropna()
-
-# convert from pandas dataframe to numpy array
-data = df.values
-
-# print(data)
+df = df.to_numpy()
 
 # normalize the data
 # TODO: add more documentation of normalization function used
+# TODO: see if .transform() is better than .fit_transform()
+# TODO: try removing normalization altogether
+# TODO: try normalizing only the numeric columns
+# TODO: try normalizing only the categorical columns
 sc = StandardScaler()
-data = sc.fit_transform(data)
-
+data = sc.fit_transform(df)
 # print(data)
+
+# also remove the header row
+# df = df.drop(0)
+
+# convert from pandas dataframe to a list of dictionaries of numpy arrays
+# data = {
+    # 'age': df['age'].to_numpy(),
+    # 'sex': df['sex'].to_numpy(),
+    # 'cp': df['cp'].to_numpy(),
+    # 'trestbps': df['trestbps'].to_numpy(),
+    # 'chol': df['chol'].to_numpy(),
+    # 'fbs': df['fbs'].to_numpy(),
+    # 'restecg': df['restecg'].to_numpy(),
+    # 'thalach': df['thalach'].to_numpy(),
+    # 'exang': df['exang'].to_numpy(),
+    # 'oldpeak': df['oldpeak'].to_numpy(),
+    # 'slope': df['slope'].to_numpy(),
+    # 'ca': df['ca'].to_numpy(),
+    # 'thal': df['thal'].to_numpy(),
+    # 'num': df['num'].to_numpy(),
+# } 
+# print(df.to_numpy())
+# for row in df:
+#     print(row)
+#     print(row['age'])
+#     print(row['age'].to_numpy())
+#     print(type(row['age'].to_numpy()))
+    # print()
+col_id = {
+    'age': 0,
+    'sex': 1,
+    'cp': 2,
+    'trestbps': 3,
+    'chol': 4,
+    'fbs': 5,
+    'restecg': 6,
+    'thalach': 7,
+    'exang': 8,
+    'oldpeak': 9,
+    'slope': 10,
+    'ca': 11,
+    'thal': 12,
+    'num': 13,
+}
+data = [
+    {
+        'age': int( row[ col_id['age'] ] ),
+        'sex': ohe.fitrow[ col_id['sex'] ],
+        'cp': row[ col_id['cp'] ],
+        'trestbps': row[ col_id['trestbps'] ],
+        'chol': row[ col_id['chol'] ],
+        'fbs': row[ col_id['fbs'] ],
+        'restecg': row[ col_id['restecg'] ],
+        'thalach': row[ col_id['thalach'] ],
+        'exang': row[ col_id['exang'] ],
+        'oldpeak': row[ col_id['oldpeak'] ],
+        'slope': row[ col_id['slope'] ],
+        'ca': row[ col_id['ca'] ],
+        'thal': row[ col_id['thal'] ],
+        'num': row[ col_id['num'] ],
+    }
+    for row in df
+]
+# data = df.to_dict('list')
+# print(data)
+for i in range(0, 5):
+    print(data[i])
+
+
+
+# One-hot encode the categorical columns
+# ohe = OneHotEncoder()
+# data = ohe.fit_transform(data).toarray()
+print(data)
 
 """
 2. Define the Keras model
+"""
+
+"""
+3. Define loss and optimizer functions
+"""
+
+"""
+4. Train the model
 """
