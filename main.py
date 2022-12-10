@@ -23,14 +23,17 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
 from rich import print
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 from sklearn.metrics import confusion_matrix, classification_report
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.callbacks import EarlyStopping
 
+ohe = OneHotEncoder()
+le = LabelEncoder()
 
 """
 1. Load and normalize the data 
@@ -68,36 +71,6 @@ Structure of the data:
         Value 1: > 50% diameter narrowing
 """
 
-# define enums to make the data more readable
-# TODO: Should I remove these?
-class Sex:
-    MALE = 1
-    FEMALE = 0
-
-class ChestPainType:
-    TYPICAL_ANGINA = 1
-    ATYPICAL_ANGINA = 2
-    NON_ANGINAL_PAIN = 3
-    ASYMPTOMATIC = 4
-
-class RestingECG:
-    NORMAL = 0
-    ABNORMAL = 1
-    HYPERTROPHY = 2
-
-class Slope:
-    UPSLOPING = 1
-    FLAT = 2
-    DOWNSLOPING = 3
-
-class Thal:
-    NORMAL = 3
-    FIXED_DEFECT = 6
-    REVERSABLE_DEFECT = 7
-
-class Diagnosis:
-    LESS_THAN_50 = 0
-    GREATER_THAN_50 = 1
 
 # 1a. Load the data into a pandas dataframe
 df = pd.read_csv('data/raw_cleveland_clinic_data.csv')
@@ -164,7 +137,7 @@ col_id = {
 data = [
     {
         'age': int( row[ col_id['age'] ] ),
-        'sex': ohe.fitrow[ col_id['sex'] ],
+        'sex': row[ col_id['sex'] ],
         'cp': row[ col_id['cp'] ],
         'trestbps': row[ col_id['trestbps'] ],
         'chol': row[ col_id['chol'] ],
@@ -180,26 +153,76 @@ data = [
     }
     for row in df
 ]
-# data = df.to_dict('list')
-# print(data)
-for i in range(0, 5):
-    print(data[i])
 
+# # One-hot encode the categorical columns
+# data2 = []
+# # data2 = data.select_dtypes(include=['object'])
+# for datum in data:
+#     data2.append(datum)
+# # data2 = pd.get_dummies(data2)
+# data2 = ohe.fit_transform(data2)#.toarray()
+# data = data.drop(data2.columns, axis=1)
+# data = pd.concat([data, data2], axis=1)
 
 
 # One-hot encode the categorical columns
 # ohe = OneHotEncoder()
 # data = ohe.fit_transform(data).toarray()
-print(data)
+# print(data)
+
+# split the data into training and testing sets
+train = data[:int(len(data)*0.8)]
+test = data[int(len(data)*0.8):]
 
 """
 2. Define the Keras model
 """
+model = Sequential()
+model.add(Dense(64, input_dim=13, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
 
 """
 3. Define loss and optimizer functions
 """
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 """
 4. Train the model
 """
+history = model.fit(train, epochs=100, batch_size=10, verbose=1)
+
+"""
+5. Evaluate the model
+"""
+loss, accuracy = model.evaluate(test, verbose=1)
+print('Accuracy: %.2f' % (accuracy*100))
+
+"""
+6. Make predictions
+"""
+predictions = model.predict(test)
+# round predictions
+rounded = [round(x[0]) for x in predictions]
+print(rounded)
+
+"""
+7. Plot the results
+"""
+
+# # plot the loss
+# plt.plot(history.history['loss'], label='train')
+# plt.plot(history.history['val_loss'], label='test')
+# plt.legend()
+# plt.show()
+
+# # plot the accuracy
+# plt.plot(history.history['accuracy'], label='train')
+# plt.plot(history.history['val_accuracy'], label='test')
+# plt.legend()
+# plt.show()
+
+"""
+8. Save the model
+"""
+# model.save('models/heart_disease_model.h5')
