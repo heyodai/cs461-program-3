@@ -47,7 +47,7 @@ I ran the program 10 times with the same configuration and got the following res
 | 5 | 0.9016393442622951 | 0.8888888888888888 | 0.8888888888888888 | 0.8888888888888888 |
 | 6 | 0.9016393442622951 | 0.8888888888888888 | 0.8888888888888888 | 0.8888888888888888 |
 
-## #Comments
+### Comments
 
 I found that the neural network was able to predict the presence of heart disease with a high degree of accuracy. I also found that the neural network was able to predict the absence of heart disease with a high degree of accuracy. However, I found that the neural network was not very good at predicting the presence of heart disease when the patient did not actually have heart disease. I think this is because the dataset is imbalanced. There are more patients in the dataset that do not have heart disease than patients that do have heart disease. I think this is why the neural network was not very good at predicting the absence of heart disease.
 
