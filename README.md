@@ -2,8 +2,6 @@
 
 ## Table of Contents
 
-TODO: update this table of contents
-
 - [CS 461 - Program 3](#cs-461---program-3)
   - [Table of Contents](#table-of-contents)
   - [About](#about)
